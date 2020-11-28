@@ -1,0 +1,9 @@
+- name: Starting namenode
+  hosts: namenode
+  tasks:
+       - name: starting the name node
+         command: hadoop-daemon.sh start namenode
+         register: z
+
+       - debug:
+              var: z
