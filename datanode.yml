@@ -1,0 +1,56 @@
+- name: configuration of slaves
+  hosts: nod1
+  tasks:
+
+       - name: Installation of JDK
+         command: rpm -i jdk-8u171-linux-x64.rpm
+         register: x
+
+       - debug:
+                 var: x
+
+       - name: Installation of Hadoop
+         command: rpm -i hadoop-1.2.1-1.x86_64.rpm --force
+         register: y
+
+       - debug:
+                 var : y
+
+
+
+       - name: creating a directory
+         file:
+              path: /d9
+              state: directory
+
+
+       - name: hdfs-site file configuration
+         blockinfile:
+              path: /etc/hadoop/hdfs-site.xml
+              insertafter: "<configuration>"
+              block:
+                       <property>
+                       <name>dfs.data.dir</name>
+                       <value>/d9</value>
+                       </property>
+
+
+       - name: core-site file configuration
+         blockinfile:
+              path: /etc/hadoop/core-site.xml
+              insertafter: "<configuration>"
+              block:
+                       <property>
+                       <name>fs.default.name</name>
+                       <value>hdfs://192.168.43.164:8001</value>
+                       </property>
+
+
+       - name: starting the data node
+         command: hadoop-daemon.sh start datanode
+         register: z
+
+       - debug:
+              var: z
+
+                                         
