@@ -46,7 +46,7 @@
                        </property>
 
 
-       - name: starting the data node
+       - name: starting the name node
          command: hadoop-daemon.sh start namenode
          register: z
 
